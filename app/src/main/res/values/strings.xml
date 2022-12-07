@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Weather App</string>
+    <string name="city_name">Vinnytsia,Ukraine</string>
+    <string name="switchTemp">FC</string>
 </resources>
