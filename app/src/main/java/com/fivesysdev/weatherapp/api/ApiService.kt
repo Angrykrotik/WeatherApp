@@ -15,7 +15,7 @@ interface ApiService {
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("units") units: String = "metric",
-        @Query("exclude") exclude: String = "daily",
+        @Query("exclude") exclude: String = "alerts",
         @Query("appid") appid: String = Constance.API
     ): Response<WeatherData>
 

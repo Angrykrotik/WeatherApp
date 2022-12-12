@@ -9,8 +9,8 @@ data class WeatherData(
     val timezone: String,
     @SerializedName("timezone_offset")
     val timezoneOffset: Long,
-    val hourly: List<HourlyWeather>
-
+    val hourly: List<HourlyWeather>,
+    val daily: List<DailyWeather>
 )
 
 

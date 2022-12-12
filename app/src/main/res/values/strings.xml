@@ -1,5 +1,26 @@
 <resources>
     <string name="app_name">Weather App</string>
     <string name="city_name">Vinnytsia,Ukraine</string>
-    <string name="switchTemp">FC</string>
+    <string name="switch_temp">FC</string>
+    <string name="current_temp">%.1f°c</string>
+    <string name="current_temp_converter">%s°F</string>
+    <string name="current_max_temp_converter">max temp: %s°F</string>
+    <string name="current_min_temp_converter">min temp: %s°F</string>
+    <string name="rv_temp_converter">%s°F</string>
+    <string name="current_wind_speed">Wind: %.1fkm/h</string>
+    <string name="wind_gust">Wind gust: %.1fkm/h</string>
+    <string name="location">%s</string>
+    <string name="uv_index">UV index: %.1f</string>
+    <string name="max_temp">max temp: %.1f°</string>
+    <string name="rv_temp">%.1f°</string>
+    <string name="rain_percentage">%d%%</string>
+    <string name="hourly_temp">%.1f°</string>
+    <string name="min_temp">min temp: %.1f°</string>
+    <string name="current_sunrise">Sunrise: %s</string>
+    <string name="current_sunset">Sunset: %s</string>
+    <string name="pressure">Pressure: %d</string>
+    <string name="clouds">Clouds cover: %d%%</string>
+    <string name="humidity">Humidity: %d%%</string>
+    <string name="rain_probability">Rain probability: %d %%</string>
+
 </resources>

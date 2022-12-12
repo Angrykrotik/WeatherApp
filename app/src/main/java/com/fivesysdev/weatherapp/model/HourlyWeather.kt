@@ -23,5 +23,7 @@ data class HourlyWeather(
     val weather: List<Weather>,
     @SerializedName("pop")
     val rainProbability: Double
-)
+) {
+    var isFahrenheit: Boolean = false
+}
 

@@ -6,13 +6,13 @@ import java.util.*
 object TimeUtils {
 
     fun getDate(timestamp: Long): String {
-        val calendar = Calendar.getInstance(Locale.ENGLISH)
+        val calendar = Calendar.getInstance(Locale.getDefault())
         calendar.timeInMillis = timestamp * 1000L
         return DateFormat.format("EEE, MMM dd, yyyy", calendar).toString()
     }
 
     fun getTime(timestamp: Long): String {
-        val calendar = Calendar.getInstance(Locale.ENGLISH)
+        val calendar = Calendar.getInstance(Locale.getDefault())
         calendar.timeInMillis = timestamp * 1000L
         return DateFormat.format("HH:mm a", calendar).toString()
     }

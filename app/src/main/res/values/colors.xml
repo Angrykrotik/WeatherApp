@@ -8,5 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="card_bg">#66395560</color>
+    <color name="thumb_celsius">#545C8A</color>
+    <color name="thumb_fahrenheit">#465087</color>
+    <color name="track_bg">#66225E75</color>
 
 </resources>

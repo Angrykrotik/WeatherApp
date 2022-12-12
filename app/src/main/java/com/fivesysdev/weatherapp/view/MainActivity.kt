@@ -9,16 +9,16 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.fivesysdev.weatherapp.R
 import com.fivesysdev.weatherapp.adapters.HourlyRecyclerAdapter
 import com.fivesysdev.weatherapp.databinding.ActivityMainBinding
 import com.fivesysdev.weatherapp.model.CityInfo
 import com.fivesysdev.weatherapp.model.WeatherData
-import com.fivesysdev.weatherapp.utils.LocationUtils
-import com.fivesysdev.weatherapp.utils.NetworkUtils
+import com.fivesysdev.weatherapp.utils.*
 import com.fivesysdev.weatherapp.utils.NetworkUtils.connectivityManager
 import com.fivesysdev.weatherapp.utils.NetworkUtils.isInternetAvailable
 import com.fivesysdev.weatherapp.utils.PermissionUtils.checkLocationPermission
-import com.fivesysdev.weatherapp.utils.TimeUtils
+import com.fivesysdev.weatherapp.utils.PermissionUtils.isPermissionGranded
 import com.fivesysdev.weatherapp.viewmodel.WeatherViewModel
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -30,16 +30,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: WeatherViewModel by viewModels()
-    private val snackbar by lazy {  createSnackbar() }
+    private val snackBar by lazy { createSnackbar() }
     private lateinit var hourlyRecyclerAdapter: HourlyRecyclerAdapter
 
     private val networkCallback by lazy {
         val callback: ((Boolean) -> (Unit)) = { isNetworkConnected ->
             if (!isNetworkConnected) {
-                snackbar.show()
+                snackBar.show()
             } else {
-                if (snackbar.isShown) {
-                    snackbar.dismiss()
+                if (snackBar.isShown) {
+                    snackBar.dismiss()
                 }
             }
         }
@@ -59,17 +59,30 @@ class MainActivity : AppCompatActivity() {
         viewModel.cityInfoLiveData.observe(this, cityInfoObserver)
 
         this.checkLocationPermission {
-            LocationUtils.getLocation(this) { latitude, longitude ->
-                viewModel.getWeather(latitude, longitude)
-                viewModel.getCityName(latitude, longitude)
-            }
+            getInfo()
         }
 
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            this.checkLocationPermission {
+                getInfo()
+            }
+        }
         initRecyclerView()
+    }
+
+    private fun getInfo() {
+        LocationUtils.getLocation(this) { latitude, longitude ->
+            viewModel.getWeather(latitude, longitude)
+            viewModel.getCityName(latitude, longitude)
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        if (this@MainActivity.isPermissionGranded()) {
+            getInfo()
+        }
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 
@@ -80,24 +93,89 @@ class MainActivity : AppCompatActivity() {
 
     private val weatherObserver = Observer<WeatherData> { weatherData ->
         binding.run {
-            currentTemperature.text = "${weatherData.current.temp}°c"
+            currentTemperature.text =
+                String.format(getString(R.string.current_temp), weatherData.current.temp)
             currentDate.text = TimeUtils.getDate(weatherData.current.dt)
-            wind.text = weatherData.current.windSpeed.toString()
-            uvIndex.text = weatherData.current.uvi.toString()
-            sunrise.text = TimeUtils.getTime(weatherData.current.sunrise)
-            sunset.text = TimeUtils.getTime(weatherData.current.sunset)
-            humidity.text = weatherData.current.humidity.toString()
+            wind.text =
+                String.format(getString(R.string.current_wind_speed), weatherData.current.windSpeed)
+            uvIndex.text = String.format(getString(R.string.uv_index), weatherData.current.uvi)
+            sunrise.text = String.format(
+                getString(R.string.current_sunrise),
+                TimeUtils.getTime(weatherData.current.sunrise)
+            )
+            sunset.text = String.format(
+                getString(R.string.current_sunset),
+                TimeUtils.getTime(weatherData.current.sunset)
+            )
+            humidity.text =
+                String.format(getString(R.string.humidity), weatherData.current.humidity)
+            weatherState.text = weatherData.current.weather.first().description
+            minTemp.text = String.format(
+                getString(R.string.min_temp),
+                weatherData.daily.first().dailyTemp.minTemp
+            )
+            maxTemp.text = String.format(
+                getString(R.string.max_temp),
+                weatherData.daily.first().dailyTemp.maxTemp
+            )
+            rainProbability.text = String.format(
+                getString(R.string.rain_probability),
+                weatherData.daily.first().dailyTemp.dailyRainProbabilyty.toInt()
+            )
+            cloudCover.text = String.format(getString(R.string.clouds), weatherData.current.clouds)
+            windGust.text =
+                String.format(getString(R.string.wind_gust), weatherData.current.windGust)
+            pressure.text =
+                String.format(getString(R.string.pressure), weatherData.current.pressure)
+            currentTime.text = TimeUtils.getTime(weatherData.current.dt)
+
+            switch1.setOnClickListener {
+                weatherData.hourly.forEach { it.isFahrenheit = switch1.isChecked }
+                hourlyRecyclerAdapter.submitList(null)
+                hourlyRecyclerAdapter.submitList(weatherData.hourly)
+                if (switch1.isChecked) {
+                    currentTemperature.text = String.format(
+                        getString(R.string.current_temp_converter),
+                        TempUtils.convertTemp(weatherData.current.temp)
+                    )
+                    minTemp.text = String.format(
+                        getString(R.string.current_min_temp_converter),
+                        TempUtils.convertTemp(weatherData.daily.first().dailyTemp.minTemp)
+                    )
+                    maxTemp.text = String.format(
+                        getString(R.string.current_max_temp_converter),
+                        TempUtils.convertTemp(weatherData.daily.first().dailyTemp.maxTemp)
+                    )
+                } else {
+                    currentTemperature.text =
+                        String.format(getString(R.string.current_temp), weatherData.current.temp)
+                    minTemp.text = String.format(
+                        getString(R.string.min_temp),
+                        weatherData.daily.first().dailyTemp.minTemp
+                    )
+                    maxTemp.text = String.format(
+                        getString(R.string.max_temp),
+                        weatherData.daily.first().dailyTemp.maxTemp
+                    )
+                }
+            }
 
             Glide.with(this@MainActivity)
                 .load("http://openweathermap.org/img/wn/${weatherData.current.weather.first().icon}@2x.png")
                 .into(weatherIcon)
 
+            Glide.with(this@MainActivity)
+                .load("http://openweathermap.org/img/wn/${weatherData.current.weather.first().icon}@2x.png")
+                .into(secondWeatherIcon)
+
+            swipeRefreshLayout.isRefreshing = false
 
             hourlyRecyclerAdapter.submitList(weatherData.hourly)
         }
     }
     private val cityInfoObserver = Observer<CityInfo> { cityInfo ->
-        binding.location.text = "${cityInfo.name}/${cityInfo.country}"
+        binding.location.text =
+            String.format(getString(R.string.location), cityInfo.name + "/" + cityInfo.country)
     }
 
     private fun initRecyclerView() = with(binding) {
@@ -117,6 +195,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val errorObserver = Observer<String> { error ->
+        binding.swipeRefreshLayout.isRefreshing = false
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
     }
 
@@ -125,8 +204,8 @@ class MainActivity : AppCompatActivity() {
             .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
             .setBackgroundTint(Color.parseColor("#006400"))
             .setAction("Retry") {
-                if (this.isInternetAvailable() && snackbar.isShown) {
-                    snackbar.dismiss()
+                if (this.isInternetAvailable() && snackBar.isShown) {
+                    snackBar.dismiss()
                 }
                 networkCallback
             }
