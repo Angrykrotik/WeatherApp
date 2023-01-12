@@ -88,13 +88,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginBottom="8dp"
                         android:text="temp. min 2"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/weatherState"
                         app:layout_constraintTop_toBottomOf="@+id/maxTemp" />
 
@@ -103,11 +101,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
                         android:text="temp.max 9 "
                         android:textColor="@color/white"
                         android:textSize="16sp"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/weatherState"
                         app:layout_constraintTop_toBottomOf="@+id/weatherState" />
 
@@ -115,11 +111,9 @@
                         android:id="@+id/weatherState"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="32dp"
                         android:text="Partly cloudly"
                         android:textColor="@color/white"
                         android:textSize="16sp"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/weather_icon"
                         app:layout_constraintTop_toBottomOf="@+id/weather_icon" />
 
@@ -143,7 +137,7 @@
                         android:layout_marginTop="8dp"
                         android:text="09:00"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="25sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/current_date" />
 
@@ -175,6 +169,7 @@
                         android:id="@+id/weather_icon"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        android:layout_marginEnd="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_launcher_foreground" />

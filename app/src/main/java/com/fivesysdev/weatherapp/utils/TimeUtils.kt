@@ -14,7 +14,7 @@ object TimeUtils {
     fun getTime(timestamp: Long): String {
         val calendar = Calendar.getInstance(Locale.getDefault())
         calendar.timeInMillis = timestamp * 1000L
-        return DateFormat.format("HH:mm a", calendar).toString()
+        return DateFormat.format("HH:mm", calendar).toString()
     }
 
 }

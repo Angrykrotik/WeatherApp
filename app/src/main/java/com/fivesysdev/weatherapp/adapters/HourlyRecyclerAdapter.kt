@@ -25,7 +25,7 @@ class HourlyRecyclerAdapter : ListAdapter<HourlyWeather,HourlyRecyclerAdapter.Ho
             if (item.isFahrenheit) {
                 tvTemperature.text = String.format(
                     itemView.context.getString(R.string.rv_temp_converter),
-                    TempUtils.convertTemp(item.temp)
+                    TempUtils.convertTemp(item.temp).toFloat()
                 )
             } else {
                 tvTemperature.text =

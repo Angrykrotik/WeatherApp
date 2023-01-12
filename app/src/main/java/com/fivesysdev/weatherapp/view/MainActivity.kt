@@ -136,15 +136,15 @@ class MainActivity : AppCompatActivity() {
                 if (switch1.isChecked) {
                     currentTemperature.text = String.format(
                         getString(R.string.current_temp_converter),
-                        TempUtils.convertTemp(weatherData.current.temp)
+                        TempUtils.convertTemp(weatherData.current.temp).toFloat()
                     )
                     minTemp.text = String.format(
                         getString(R.string.current_min_temp_converter),
-                        TempUtils.convertTemp(weatherData.daily.first().dailyTemp.minTemp)
+                        TempUtils.convertTemp(weatherData.daily.first().dailyTemp.minTemp).toFloat()
                     )
                     maxTemp.text = String.format(
                         getString(R.string.current_max_temp_converter),
-                        TempUtils.convertTemp(weatherData.daily.first().dailyTemp.maxTemp)
+                        TempUtils.convertTemp(weatherData.daily.first().dailyTemp.maxTemp).toFloat()
                     )
                 } else {
                     currentTemperature.text =
