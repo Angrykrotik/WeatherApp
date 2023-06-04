@@ -1,10 +1,12 @@
 package com.fivesysdev.weatherapp.view
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,6 +55,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val w: Window = window
+        w.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+
         viewModel.weatherLiveData.observe(this, weatherObserver)
         viewModel.errorLiveData.observe(this, errorObserver)
         viewModel.loadingLiveData.observe(this, loadingObserver)
@@ -109,7 +117,7 @@ class MainActivity : AppCompatActivity() {
             )
             humidity.text =
                 String.format(getString(R.string.humidity), weatherData.current.humidity)
-            weatherState.text = weatherData.current.weather.first().description
+            weatherState.text = weatherData.current.weather.first().description.uppercase()
             minTemp.text = String.format(
                 getString(R.string.min_temp),
                 weatherData.daily.first().dailyTemp.minTemp
@@ -179,7 +187,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() = with(binding) {
-        rvWeather.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+        rvWeather.layoutManager =
+            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
         hourlyRecyclerAdapter = HourlyRecyclerAdapter()
         rvWeather.adapter = hourlyRecyclerAdapter
     }
@@ -200,7 +209,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createSnackbar(): Snackbar {
-        return Snackbar.make(binding.root, "There is no Internet connection", Snackbar.LENGTH_INDEFINITE)
+        return Snackbar.make(
+            binding.root,
+            "There is no Internet connection",
+            Snackbar.LENGTH_INDEFINITE
+        )
             .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
             .setBackgroundTint(Color.parseColor("#006400"))
             .setAction("Retry") {
