@@ -11,6 +11,8 @@ data class WeatherData(
     val timezoneOffset: Long,
     val hourly: List<HourlyWeather>,
     val daily: List<DailyWeather>
-)
+) {
+    var cityName: String = ""
+}
 
 

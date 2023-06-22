@@ -1,11 +1,11 @@
 package com.fivesysdev.weatherapp.utils
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -13,7 +13,7 @@ import com.google.android.gms.tasks.CancellationTokenSource
 
 object LocationUtils {
 
-    private fun turnOnLocation(activity: AppCompatActivity) {
+    private fun turnOnLocation(activity: Activity) {
         DialogManager.locationSettingDialog(activity, object : DialogManager.Listener {
             override fun onPositive() {
                 activity.startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
@@ -21,12 +21,12 @@ object LocationUtils {
         })
     }
 
-    private fun isLocationEnabled(activity: AppCompatActivity): Boolean {
+    private fun isLocationEnabled(activity: Activity): Boolean {
         val lm = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
-    fun getLocation(activity: AppCompatActivity, locationCallback: ((Double, Double) -> (Unit))) {
+    fun getLocation(activity: Activity, locationCallback: ((Double, Double) -> (Unit))) {
         if (!isLocationEnabled(activity)) {
             turnOnLocation(activity)
         } else {

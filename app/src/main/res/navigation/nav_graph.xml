@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/weatherFragment">
+
+    <fragment
+        android:id="@+id/weatherFragment"
+        android:name="com.fivesysdev.weatherapp.view.WeatherFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_weather" >
+
+        <action
+            android:id="@+id/action_weatherFragment_to_locationSelectDialogFragmentSelectDialogFragment"
+            app:destination="@id/locationSelectDialogFragmentSelectDialogFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.fivesysdev.weatherapp.view.FavouriteFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_favourite"/>
+    <dialog
+        android:id="@+id/locationSelectDialogFragmentSelectDialogFragment"
+        android:name="com.fivesysdev.weatherapp.view.LocationSelectDialogFragment"
+        android:label="LocationSelectDialogFragmentSelectDialogFragment"
+        tools:layout="@layout/location_select_dialog_fragment">
+        <action
+            android:id="@+id/action_locationSelectDialogFragmentSelectDialogFragment_to_favouriteFragment"
+            app:destination="@id/favouriteFragment" />
+    </dialog>
+
+</navigation>

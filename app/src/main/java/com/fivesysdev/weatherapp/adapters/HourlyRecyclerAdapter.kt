@@ -15,7 +15,7 @@ import com.fivesysdev.weatherapp.utils.TimeUtils
 
 class HourlyRecyclerAdapter : ListAdapter<HourlyWeather,HourlyRecyclerAdapter.Holder>(Comparator()) {
     class Holder(view: View) : RecyclerView.ViewHolder(view){
-        val binding = ItemHourWeatherBinding.bind(view)
+        private val binding = ItemHourWeatherBinding.bind(view)
         fun bind(item: HourlyWeather) = with(binding) {
             tvTime.text = TimeUtils.getTime(item.dt)
             tvRainPercentage.text = String.format(

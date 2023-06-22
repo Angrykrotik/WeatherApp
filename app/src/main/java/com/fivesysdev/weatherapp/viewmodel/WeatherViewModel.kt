@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fivesysdev.weatherapp.model.CityInfo
+import com.fivesysdev.weatherapp.model.LocationInfo
 import com.fivesysdev.weatherapp.model.WeatherData
 import com.fivesysdev.weatherapp.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,15 @@ class WeatherViewModel @Inject constructor(private val repository: WeatherReposi
     private val cityInfoMutableLiveData = MutableLiveData<CityInfo>()
     val cityInfoLiveData: LiveData<CityInfo>
         get() = cityInfoMutableLiveData
+
+    private val saveInfoMutableLiveData = MutableLiveData<Boolean>()
+    val saveInfoLiveData: LiveData<Boolean>
+        get() = saveInfoMutableLiveData
+
+    private val locationInfoArrayMutableLiveData = MutableLiveData<List<LocationInfo>>()
+    val locationInfoArrayLiveData: LiveData<List<LocationInfo>>
+        get() = locationInfoArrayMutableLiveData
+
 
     val errorLiveData = MutableLiveData<String>()
     val loadingLiveData = MutableLiveData<Boolean>()
@@ -60,5 +70,28 @@ class WeatherViewModel @Inject constructor(private val repository: WeatherReposi
         }
     }
 
+    fun saveInfo(locationInfo: LocationInfo) = viewModelScope.launch {
+        try {
+            repository.saveLocation(locationInfo)
+            saveInfoMutableLiveData.postValue(true)
+        } catch (e: IOException) {
+            Log.e("CityInfo", e.message ?: "")
+        } catch (e: HttpException) {
+            Log.e("CityInfo", e.message ?: "")
+        }
+    }
+
+    fun findLocationByName(cityName: String) = viewModelScope.launch {
+        try {
+            val locationInfoArray = repository.findLocationByName(cityName)
+            if (locationInfoArray != null) {
+                locationInfoArrayMutableLiveData.postValue(locationInfoArray)
+            }
+        } catch (e: IOException) {
+            Log.e("LocationInfo", e.message ?: "")
+        } catch (e: HttpException) {
+            Log.e("LocationInfo", e.message ?: "")
+        }
+    }
 }
 

@@ -5,11 +5,12 @@ import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 
 object PermissionUtils {
 
 
-    fun AppCompatActivity.checkLocationPermission(onGranded: (() -> (Unit))){
+    fun Fragment.checkLocationPermission(onGranded: (() -> (Unit))){
         if(!isPermissionGranded(Manifest.permission.ACCESS_FINE_LOCATION)){
             val permLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
                 onGranded()
@@ -20,7 +21,7 @@ object PermissionUtils {
         }
     }
 
-    fun AppCompatActivity.isPermissionGranded(perm: String = Manifest.permission.ACCESS_FINE_LOCATION): Boolean {
-        return ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED
+    fun Fragment.isPermissionGranded(perm: String = Manifest.permission.ACCESS_FINE_LOCATION): Boolean {
+        return ContextCompat.checkSelfPermission(requireContext(), perm) == PackageManager.PERMISSION_GRANTED
     }
 }

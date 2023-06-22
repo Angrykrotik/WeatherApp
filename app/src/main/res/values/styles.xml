@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<style name="CustomBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+<item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+<item name="android:windowIsFloating">false</item>
+<item name="android:windowSoftInputMode">adjustResize|stateVisible</item>
+</style>
+
+<style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+<item name="android:background">@drawable/rounded_dialog</item>
+</style>
+
+    <style name="BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="android:background">@color/card_bg</item>
+        <item name="labelVisibilityMode">unlabeled</item>
+        <item name="itemIconTint">@drawable/color_bottom_view_item</item>
+    </style>
+
+</resources>

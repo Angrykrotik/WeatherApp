@@ -11,5 +11,6 @@
     <color name="thumb_celsius">#545C8A</color>
     <color name="thumb_fahrenheit">#465087</color>
     <color name="track_bg">#66225E75</color>
+    <color name="light_gray">#535C60</color>
 
 </resources>
